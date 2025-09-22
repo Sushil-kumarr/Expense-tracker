@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import datetime, os
+import datetime
+import os
 
 expense_file = "expenses.csv"
 
@@ -31,17 +31,16 @@ if os.path.exists(expense_file):
     total_spent = df["Amount"].sum()
     st.write(f"### Total Spent: ₹{total_spent:.2f}")
 
-    # Category Pie Chart
+    # Expenses by category (text only)
     st.subheader("By Category")
-    fig1, ax1 = plt.subplots()
-    df.groupby("Category")["Amount"].sum().plot.pie(autopct="%1.1f%%", ax=ax1)
-    st.pyplot(fig1)
+    category_totals = df.groupby("Category")["Amount"].sum()
+    for cat, amt in category_totals.items():
+        st.write(f"{cat}: ₹{amt:.2f}")
 
-    # Monthly Trend
+    # Monthly Trend (text only)
     st.subheader("Monthly Trend")
     df["Date"] = pd.to_datetime(df["Date"])
     df["Month"] = df["Date"].dt.to_period("M")
-    fig2, ax2 = plt.subplots()
-    df.groupby("Month")["Amount"].sum().plot.bar(ax=ax2)
-    plt.xticks(rotation=45)
-    st.pyplot(fig2)
+    monthly_totals = df.groupby("Month")["Amount"].sum()
+    for month, amt in monthly_totals.items():
+        st.write(f"{month}: ₹{amt:.2f}")
