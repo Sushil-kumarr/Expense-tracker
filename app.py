@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import datetime
 import os
 
 expense_file = "expenses.csv"
@@ -12,7 +11,8 @@ st.header("➕ Add Expense")
 name = st.text_input("Expense Name")
 amount = st.number_input("Amount (₹)", min_value=0.0)
 category = st.selectbox("Category", ["Food", "Home", "Work", "Fun", "Misc"])
-date = st.date_input("Date", datetime.date.today())
+# Use pandas to get today's date
+date = st.date_input("Date", pd.Timestamp("today"))
 
 if st.button("Save Expense"):
     file_exists = os.path.exists(expense_file)
